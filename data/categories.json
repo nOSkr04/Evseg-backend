@@ -1,0 +1,34 @@
+[
+  {
+    "photo": "lit123.jpg",
+    "_id": "5e90434cd433fa11b078ed8a",
+    "name": "Бүгд",
+    "description": "Бүх нийтлэл",
+    "createdAt": "2020-04-10T09:58:36.412Z",
+    "__v": 0
+  },
+  {
+    "photo": "it.jpg",
+    "_id": "5e90478549941f52dcb01b34",
+    "name": "Эрэгтэй",
+    "description": "Эрэгтэй нийтлэл",
+    "createdAt": "2020-04-10T10:16:37.620Z",
+    "__v": 0
+  },
+  {
+    "photo": "biz.jpg",
+    "_id": "5e9047fd49941f52dcb01b35",
+    "name": "Эмэгтэй",
+    "description": "Эмэгтэй нийтлэл",
+    "createdAt": "2020-04-10T10:18:37.155Z",
+    "__v": 0
+  },
+  {
+    "photo": "science.jpg",
+    "_id": "5e96cc1ba816c94e009a9c9e",
+    "name": "Өсвөр нас",
+    "description": "Өсвөр нас нийтлэл",
+    "createdAt": "2020-04-15T08:55:55.037Z",
+    "__v": 0
+  }
+]
