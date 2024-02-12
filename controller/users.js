@@ -176,8 +176,10 @@ export const updatePassword = asyncHandler(async (req, res, next) => {
 });
 
 export const givePoint = asyncHandler(async (req, res, next) => {
+  console.log(clientId, point, "body");
   const { clientId, point } = req.body;
   const client = await User.findById(clientId);
+  console.log(client, "client");
   if (client) {
     throw new MyError("Хэрэглэгч олдосонгүй", 402);
   }
@@ -186,7 +188,7 @@ export const givePoint = asyncHandler(async (req, res, next) => {
     client.expoPushToken,
     `Таны дансанд ${point} эпойнт орлоо`
   );
-  await client.save();
+  client.save();
 
   res.status(200).json({
     success: true,
