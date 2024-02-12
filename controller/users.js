@@ -186,7 +186,7 @@ export const givePoint = asyncHandler(async (req, res, next) => {
   if (client.expoPushToken) {
     await sendNotification(
       client.expoPushToken,
-      `Таны бүртгэлд ${transformPoint} орлоо баярлалаа. EVSEG Cashmere`
+      `Таны бүртгэлд ${transformPoint.toLocaleString()} пойнт орлоо баярлалаа. EVSEG Cashmere`
     );
   }
   client.save();
@@ -210,7 +210,7 @@ export const minusPoint = asyncHandler(async (req, res, next) => {
   if (client.expoPushToken) {
     await sendNotification(
       client.expoPushToken,
-      `Таны пойнтноос ${point} хасагдлаа баярлалаа. EVSEG Cashmere`
+      `Таны пойнтноос ${point.toLocaleString()} хасагдлаа баярлалаа. EVSEG Cashmere`
     );
   }
   client.save();
