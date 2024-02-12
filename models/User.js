@@ -44,6 +44,7 @@ const UserSchema = new mongoose.Schema({
     required: [true, "Нууц үгээ оруулна уу"],
     select: false,
   },
+  expoPushToken: String,
 
   resetPasswordToken: String,
   resetPasswordExpire: Date,

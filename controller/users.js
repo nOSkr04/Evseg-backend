@@ -2,6 +2,7 @@ import User from "../models/User.js";
 import MyError from "../utils/myError.js";
 import asyncHandler from "express-async-handler";
 import paginate from "../utils/paginate.js";
+import sendNotification from "../utils/sendNotification.js";
 export const authMeUser = asyncHandler(async (req, res) => {
   const user = await User.findById(req.userId);
   if (!user) {
@@ -68,6 +69,11 @@ export const logout = asyncHandler(async (req, res, next) => {
     expires: new Date(Date.now() - 365 * 24 * 60 * 60 * 1000000),
     httpOnly: true,
   };
+
+  const user = await User.findById(req.userId);
+
+  user.expoPushToken = null;
+  user.save();
 
   res.status(200).cookie("amazon-token", null, cookieOption).json({
     success: true,
@@ -163,5 +169,24 @@ export const updatePassword = asyncHandler(async (req, res, next) => {
   res.status(200).json({
     success: true,
     data: user,
+  });
+});
+
+export const givePoint = asyncHandler(async (req, res, next) => {
+  const { clientId, point } = req.body;
+  const client = await User.findById(clientId);
+  if (client) {
+    throw new MyError("Хэрэглэгч олдосонгүй", 402);
+  }
+  client.point = point;
+  await sendNotification(
+    client.expoPushToken,
+    `Таны дансанд ${point} эпойнт орлоо`
+  );
+  await client.save();
+
+  res.status(200).json({
+    success: true,
+    data: client,
   });
 });

@@ -12,6 +12,7 @@ import {
   logout,
   authMeUser,
   updatePassword,
+  givePoint,
 } from "../controller/users.js";
 
 const router = Router();
@@ -21,6 +22,8 @@ router.route("/register").post(register);
 router.route("/login").post(login);
 router.route("/logout").get(logout);
 router.route("/update-password/:id").post(updatePassword);
+router.route("/:id").get(getUser);
+router.route("/givePoint").post(givePoint);
 router.use(protect);
 
 //"/api/v1/users"
@@ -29,6 +32,6 @@ router
   .get(authorize("admin"), getUsers)
   .post(authorize("admin"), createUser);
 router.route("/me").get(protect, authMeUser);
-router.route("/:id").get(getUser).put(updateUser).delete(protect, deleteUser);
+router.route("/:id").put(updateUser).delete(protect, deleteUser);
 
 export default router;
