@@ -22,7 +22,7 @@ router.route("/register").post(register);
 router.route("/login").post(login);
 router.route("/logout").get(protect, logout);
 router.route("/update-password/:id").post(updatePassword);
-router.route("/givePoint").post(givePoint);
+
 router.use(protect);
 
 //"/api/v1/users"
@@ -32,5 +32,5 @@ router
   .post(authorize("admin"), createUser);
 router.route("/me").get(protect, authMeUser);
 router.route("/:id").get(getUser).put(updateUser).delete(protect, deleteUser);
-
+router.route("/givePoint").post(givePoint);
 export default router;
