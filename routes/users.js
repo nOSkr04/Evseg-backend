@@ -30,7 +30,7 @@ router
   .route("/")
   .get(authorize("admin"), getUsers)
   .post(authorize("admin"), createUser);
+  router.route("/givePoint").post(givePoint);
 router.route("/me").get(protect, authMeUser);
 router.route("/:id").get(getUser).put(updateUser).delete(protect, deleteUser);
-router.route("/givePoint").post(givePoint);
 export default router;
