@@ -26,11 +26,12 @@ router.route("/update-password/:id").post(updatePassword);
 router.use(protect);
 
 //"/api/v1/users"
+
 router
   .route("/")
   .get(authorize("admin"), getUsers)
   .post(authorize("admin"), createUser);
-  router.route("/givePoint").post(givePoint);
 router.route("/me").get(protect, authMeUser);
+router.route("/givePoint").post(givePoint);
 router.route("/:id").get(getUser).put(updateUser).delete(protect, deleteUser);
 export default router;
