@@ -181,11 +181,12 @@ export const givePoint = asyncHandler(async (req, res, next) => {
   if (!client) {
     throw new MyError("Хэрэглэгч олдосонгүй", 402);
   }
-  client.point = point;
+  const transformPoint = point * 0.05;
+  client.point = transformPoint;
   if (client.expoPushToken) {
     await sendNotification(
       client.expoPushToken,
-      `Таны дансанд ${point} эпойнт орлоо`
+      `Таны дансанд ${transformPoint} эпойнт орлоо`
     );
   }
   client.save();
