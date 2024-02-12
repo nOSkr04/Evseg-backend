@@ -13,6 +13,7 @@ import {
   authMeUser,
   updatePassword,
   givePoint,
+  minusPoint,
 } from "../controller/users.js";
 
 const router = Router();
@@ -33,5 +34,6 @@ router
   .post(authorize("admin"), createUser);
 router.route("/me").get(protect, authMeUser);
 router.route("/givePoint").post(givePoint);
+router.route("/minusPoint").post(minusPoint);
 router.route("/:id").get(getUser).put(updateUser).delete(protect, deleteUser);
 export default router;

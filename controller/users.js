@@ -186,7 +186,31 @@ export const givePoint = asyncHandler(async (req, res, next) => {
   if (client.expoPushToken) {
     await sendNotification(
       client.expoPushToken,
-      `Таны дансанд ${transformPoint} эпойнт орлоо`
+      `Таны бүртгэлд ${transformPoint} орлоо баярлалаа. EVSEG Cashmere`
+    );
+  }
+  client.save();
+
+  res.status(200).json({
+    success: true,
+    data: client,
+  });
+});
+export const minusPoint = asyncHandler(async (req, res, next) => {
+  const { clientId, point } = req.body;
+  const client = await User.findById(clientId);
+
+  if (!client) {
+    throw new MyError("Хэрэглэгч олдосонгүй", 402);
+  }
+  if (client.point < point) {
+    throw new MyError("Пойнт үлдэгдэл хүрэлцэхгүй байна", 402);
+  }
+  client.point = client.point - point;
+  if (client.expoPushToken) {
+    await sendNotification(
+      client.expoPushToken,
+      `Таны пойнтноос ${point} хасагдлаа баярлалаа. EVSEG Cashmere`
     );
   }
   client.save();
