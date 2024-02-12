@@ -20,9 +20,8 @@ const router = Router();
 //"/api/v1/users"
 router.route("/register").post(register);
 router.route("/login").post(login);
-router.route("/logout").get(logout);
+router.route("/logout").get(protect, logout);
 router.route("/update-password/:id").post(updatePassword);
-router.route("/:id").get(getUser);
 router.route("/givePoint").post(givePoint);
 router.use(protect);
 
@@ -32,6 +31,6 @@ router
   .get(authorize("admin"), getUsers)
   .post(authorize("admin"), createUser);
 router.route("/me").get(protect, authMeUser);
-router.route("/:id").put(updateUser).delete(protect, deleteUser);
+router.route("/:id").get(getUser).put(updateUser).delete(protect, deleteUser);
 
 export default router;

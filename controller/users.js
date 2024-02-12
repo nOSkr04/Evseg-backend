@@ -3,6 +3,7 @@ import MyError from "../utils/myError.js";
 import asyncHandler from "express-async-handler";
 import paginate from "../utils/paginate.js";
 import sendNotification from "../utils/sendNotification.js";
+
 export const authMeUser = asyncHandler(async (req, res) => {
   const user = await User.findById(req.userId);
   if (!user) {
@@ -29,8 +30,7 @@ export const register = asyncHandler(async (req, res, next) => {
 
 // логин хийнэ
 export const login = asyncHandler(async (req, res, next) => {
-  const { phone, password } = req.body;
-
+  const { phone, password, expoPushToken } = req.body;
   // Оролтыгоо шалгана
 
   if (!phone || !password) {
@@ -49,6 +49,9 @@ export const login = asyncHandler(async (req, res, next) => {
   if (!ok) {
     throw new MyError("Имэйл болон нууц үгээ зөв оруулна уу", 401);
   }
+
+  user.expoPushToken = expoPushToken;
+  user.save();
 
   const token = user.getJsonWebToken();
 
@@ -72,7 +75,7 @@ export const logout = asyncHandler(async (req, res, next) => {
 
   const user = await User.findById(req.userId);
 
-  user.expoPushToken = null;
+  user.expoPushToken = undefined;
   user.save();
 
   res.status(200).cookie("amazon-token", null, cookieOption).json({

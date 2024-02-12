@@ -33,6 +33,7 @@ const UserSchema = new mongoose.Schema({
   nationalId: String,
   bankName: String,
   bankNumber: String,
+  expoPushToken: String,
   role: {
     type: String,
     enum: ["user", "operator", "admin"],
@@ -44,8 +45,6 @@ const UserSchema = new mongoose.Schema({
     required: [true, "Нууц үгээ оруулна уу"],
     select: false,
   },
-  expoPushToken: String,
-
   resetPasswordToken: String,
   resetPasswordExpire: Date,
   createdAt: {
