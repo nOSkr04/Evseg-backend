@@ -5,8 +5,8 @@ import paginate from "../utils/paginate.js";
 import sendNotification from "../utils/sendNotification.js";
 
 export const authMeUser = asyncHandler(async (req, res) => {
+  console.log(req.userId);
   const user = await User.findById(req.userId);
-  console.log(user);
   if (!user) {
     throw new MyError(req.params.id, 401);
   }
