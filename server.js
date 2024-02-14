@@ -18,6 +18,7 @@ import errorHandler from "./middleware/error.js";
 import connectDB from "./config/db.js";
 import usersRoutes from "./routes/users.js";
 import mediasRoutes from "./routes/media.js";
+import pointTransactionsRoutes from "./routes/point-transactions.js";
 // Аппын тохиргоог process.env рүү ачаалах
 dotenv.config({ path: "./config/config.env" });
 
@@ -95,6 +96,7 @@ app.use(morgan("combined", { stream: accessLogStream }));
 // REST API RESOURSE
 app.use("/users", usersRoutes);
 app.use("/media", mediasRoutes);
+app.use("/pointTransactions", pointTransactionsRoutes);
 // Алдаа үүсэхэд барьж авч алдааны мэдээллийг клиент тал руу автоматаар мэдээлнэ
 app.use(errorHandler);
 

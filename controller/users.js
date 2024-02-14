@@ -3,6 +3,7 @@ import MyError from "../utils/myError.js";
 import asyncHandler from "express-async-handler";
 import paginate from "../utils/paginate.js";
 import sendNotification from "../utils/sendNotification.js";
+import PointTransaction from "../models/point-transaction.js";
 
 export const authMeUser = asyncHandler(async (req, res) => {
   const user = await User.findById(req.userId);
@@ -183,18 +184,29 @@ export const givePoint = asyncHandler(async (req, res, next) => {
     throw new MyError("Хэрэглэгч олдосонгүй", 402);
   }
   const transformPoint = point * 0.05;
-  client.point = client.point + transformPoint;
+
   if (client.expoPushToken) {
     await sendNotification(
       client.expoPushToken,
       `Таны бүртгэлд ${transformPoint.toLocaleString()} пойнт орлоо баярлалаа. EVSEG Cashmere`
     );
   }
+  const pointTransaction = await PointTransaction.create({
+    createUser: req.userId,
+    receivedUser: clientId,
+    isMinus: false,
+    point: transformPoint,
+    money: point,
+    userFirstPoint: client.point,
+    userLastPoint: client.point + transformPoint,
+  });
+  client.point = client.point + transformPoint;
   client.save();
 
   res.status(200).json({
     success: true,
     data: client,
+    pointTransaction,
   });
 });
 export const minusPoint = asyncHandler(async (req, res, next) => {
@@ -207,17 +219,26 @@ export const minusPoint = asyncHandler(async (req, res, next) => {
   if (client.point < point) {
     throw new MyError("Пойнт үлдэгдэл хүрэлцэхгүй байна", 402);
   }
-  client.point = client.point - point;
   if (client.expoPushToken) {
     await sendNotification(
       client.expoPushToken,
       `Таны пойнтноос ${point.toLocaleString()} хасагдлаа баярлалаа. EVSEG Cashmere`
     );
   }
+  const pointTransaction = await PointTransaction.create({
+    createUser: req.userId,
+    receivedUser: clientId,
+    isMinus: true,
+    point: point,
+    userFirstPoint: client.point,
+    userLastPoint: client.point - point,
+  });
+  client.point = client.point - point;
   client.save();
 
   res.status(200).json({
     success: true,
     data: client,
+    pointTransaction,
   });
 });
