@@ -5,7 +5,6 @@ import paginate from "../utils/paginate.js";
 import sendNotification from "../utils/sendNotification.js";
 
 export const authMeUser = asyncHandler(async (req, res) => {
-  console.log(req.userId);
   const user = await User.findById(req.userId);
   if (!user) {
     throw new MyError(req.params.id, 401);
@@ -32,7 +31,7 @@ export const register = asyncHandler(async (req, res, next) => {
 // логин хийнэ
 export const login = asyncHandler(async (req, res, next) => {
   const { phone, password, expoPushToken } = req.body;
-  console.log(req.body, "body")
+  console.log(req.body, "reqbody");
   // Оролтыгоо шалгана
 
   if (!phone || !password) {
