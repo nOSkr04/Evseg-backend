@@ -210,7 +210,7 @@ export const givePoint = asyncHandler(async (req, res, next) => {
   });
 });
 export const minusPoint = asyncHandler(async (req, res, next) => {
-  const { clientId, point } = req.body;
+  const { clientId, point, minusMoney } = req.body;
   const client = await User.findById(clientId);
 
   if (!client) {
@@ -232,6 +232,7 @@ export const minusPoint = asyncHandler(async (req, res, next) => {
     point: point,
     userFirstPoint: client.point,
     userLastPoint: client.point - point,
+    minusMoney: minusMoney,
   });
   client.point = client.point - point;
   client.save();

@@ -10,6 +10,7 @@ const PointTransactionSchema = new mongoose.Schema(
       type: mongoose.Schema.ObjectId,
       ref: "User",
     },
+    minusMoney: Number,
     isMinus: {
       type: Boolean,
     },
