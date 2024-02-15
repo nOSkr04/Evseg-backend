@@ -259,7 +259,7 @@ export const minusPoint = asyncHandler(async (req, res, next) => {
 });
 
 export const findPhone = asyncHandler(async (req, res) => {
-  const { phone } = req.params;
+  const { phone } = req.body;
   const filters = {};
   if (phone && phone !== "") {
     filters.$or = [{ phone: { $regex: phone, $options: "i" } }];
