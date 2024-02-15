@@ -189,7 +189,7 @@ export const givePoint = asyncHandler(async (req, res, next) => {
     await sendNotification(
       client.expoPushToken,
       `Таны бүртгэлд ${transformPoint.toLocaleString()} пойнт орлоо баярлалаа. EVSEG Cashmere`,
-      { loyalty: true }
+      { loyalty: true, minus: false, point: transformPoint }
     );
   }
   const pointTransaction = await PointTransaction.create({
@@ -235,7 +235,7 @@ export const minusPoint = asyncHandler(async (req, res, next) => {
     await sendNotification(
       client.expoPushToken,
       `Таны пойнтноос ${point.toLocaleString()} хасагдлаа баярлалаа. EVSEG Cashmere`,
-      { loyalty: true }
+      { loyalty: true, minus: true, point: point }
     );
   }
   const pointTransaction = await PointTransaction.create({
