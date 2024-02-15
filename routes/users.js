@@ -36,6 +36,6 @@ router
 router.route("/me").get(authMeUser);
 router.route("/givePoint").post(givePoint);
 router.route("/minusPoint").post(minusPoint);
-router.route("/findPhone").get(findPhone);
+router.route("/findPhone/:phone").get(findPhone);
 router.route("/:id").get(getUser).put(updateUser).delete(protect, deleteUser);
 export default router;
