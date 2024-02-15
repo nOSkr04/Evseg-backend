@@ -201,6 +201,7 @@ export const givePoint = asyncHandler(async (req, res, next) => {
     userLastPoint: client.point + transformPoint,
   });
   client.point = client.point + transformPoint;
+  client.moneySpent = client.moneySpent + point;
   if (client.moneySpent < 100000) {
     client.loyaltyPercent = 2;
   } else if (client.moneySpent < 200000) {
