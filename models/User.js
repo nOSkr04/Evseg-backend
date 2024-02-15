@@ -30,6 +30,14 @@ const UserSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
+  moneySpent: {
+    type: Number,
+    default: 0,
+  },
+  loyaltyPercent: {
+    type: Number,
+    default: 1,
+  },
   nationalId: String,
   bankName: String,
   bankNumber: String,

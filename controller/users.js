@@ -183,7 +183,7 @@ export const givePoint = asyncHandler(async (req, res, next) => {
   if (!client) {
     throw new MyError("Хэрэглэгч олдосонгүй", 402);
   }
-  const transformPoint = point * 0.05;
+  const transformPoint = (point * client.loyaltyPercent) / 100;
 
   if (client.expoPushToken) {
     await sendNotification(
@@ -201,6 +201,16 @@ export const givePoint = asyncHandler(async (req, res, next) => {
     userLastPoint: client.point + transformPoint,
   });
   client.point = client.point + transformPoint;
+  if (client.moneySpent < 100000) {
+    client.loyaltyPercent = 2;
+  } else if (client.moneySpent < 200000) {
+    client.loyaltyPercent = 3;
+  } else if (client.moneySpent < 300000) {
+    client.loyaltyPercent = 4;
+  } else if (client.moneySpent < 400000) {
+    client.loyaltyPercent = 5;
+  }
+
   client.save();
 
   res.status(200).json({
@@ -241,5 +251,29 @@ export const minusPoint = asyncHandler(async (req, res, next) => {
     success: true,
     data: client,
     pointTransaction,
+  });
+});
+
+export const findPhone = asyncHandler(async (req, res) => {
+  const { phone } = req.params;
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 10;
+  const sort = req.query.sort;
+  const select = req.query.select;
+
+  ["select", "sort", "page", "limit"].forEach((el) => delete req.query[el]);
+  const pagination = await paginate(page, limit, User);
+
+  const users = await User.find(req.query, select)
+    .sort(sort)
+    .skip(pagination.start - 1)
+    .limit(limit);
+
+  res.status(200).json({
+    success: true,
+    data: users,
+    pagination,
+    total: pagination.total,
+    pageCount: pagination.pageCount,
   });
 });
