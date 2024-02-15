@@ -188,7 +188,8 @@ export const givePoint = asyncHandler(async (req, res, next) => {
   if (client.expoPushToken) {
     await sendNotification(
       client.expoPushToken,
-      `Таны бүртгэлд ${transformPoint.toLocaleString()} пойнт орлоо баярлалаа. EVSEG Cashmere`
+      `Таны бүртгэлд ${transformPoint.toLocaleString()} пойнт орлоо баярлалаа. EVSEG Cashmere`,
+      { loyalty: true }
     );
   }
   const pointTransaction = await PointTransaction.create({
@@ -201,7 +202,7 @@ export const givePoint = asyncHandler(async (req, res, next) => {
     userLastPoint: client.point + transformPoint,
   });
   client.point = client.point + transformPoint;
-  client.moneySpent = client.moneySpent + point;
+  client.moneySpent = Number(client.moneySpent) + Number(point);
   if (client.moneySpent < 100000) {
     client.loyaltyPercent = 2;
   } else if (client.moneySpent < 200000) {
@@ -233,7 +234,8 @@ export const minusPoint = asyncHandler(async (req, res, next) => {
   if (client.expoPushToken) {
     await sendNotification(
       client.expoPushToken,
-      `Таны пойнтноос ${point.toLocaleString()} хасагдлаа баярлалаа. EVSEG Cashmere`
+      `Таны пойнтноос ${point.toLocaleString()} хасагдлаа баярлалаа. EVSEG Cashmere`,
+      { loyalty: true }
     );
   }
   const pointTransaction = await PointTransaction.create({
