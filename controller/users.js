@@ -4,7 +4,7 @@ import asyncHandler from "express-async-handler";
 import paginate from "../utils/paginate.js";
 import sendNotification from "../utils/sendNotification.js";
 import PointTransaction from "../models/point-transaction.js";
-
+// import { FilterQuery } from "mongoose";
 export const authMeUser = asyncHandler(async (req, res) => {
   const user = await User.findById(req.userId);
   if (!user) {
@@ -221,6 +221,7 @@ export const givePoint = asyncHandler(async (req, res, next) => {
     pointTransaction,
   });
 });
+
 export const minusPoint = asyncHandler(async (req, res, next) => {
   const { clientId, point, minusMoney } = req.body;
   const client = await User.findById(clientId);
@@ -259,24 +260,15 @@ export const minusPoint = asyncHandler(async (req, res, next) => {
 
 export const findPhone = asyncHandler(async (req, res) => {
   const { phone } = req.params;
-  const page = parseInt(req.query.page) || 1;
-  const limit = parseInt(req.query.limit) || 10;
-  const sort = req.query.sort;
-  const select = req.query.select;
+  const filters = {};
+  if (phone && phone !== "") {
+    filters.$or = [{ phone: { $regex: phone, $options: "i" } }];
+  }
 
-  ["select", "sort", "page", "limit"].forEach((el) => delete req.query[el]);
-  const pagination = await paginate(page, limit, User);
-
-  const users = await User.find(req.query, select)
-    .sort(sort)
-    .skip(pagination.start - 1)
-    .limit(limit);
+  const data = await User.find(filters);
 
   res.status(200).json({
     success: true,
-    data: users,
-    pagination,
-    total: pagination.total,
-    pageCount: pagination.pageCount,
+    data,
   });
 });
