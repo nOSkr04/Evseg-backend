@@ -7,6 +7,7 @@ import PointTransaction from "../models/point-transaction.js";
 // import { FilterQuery } from "mongoose";
 export const authMeUser = asyncHandler(async (req, res) => {
   const user = await User.findById(req.userId);
+  console.log(user);
   if (!user) {
     throw new MyError(req.params.id, 401);
   }
